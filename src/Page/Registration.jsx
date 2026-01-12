@@ -19,13 +19,13 @@ const Registration = () => {
                 const user = userCredential
                 // console.log(user)
                 setUser(user);
-                alert('Login successfull')
+                alert('SignUp successfull')
             })
             .catch((error) => {
 
                 const errorCode = error.code;
-                const errorMessage = error.Message;
-                alert(errorMessage);
+                const errorMessage = error.message;
+                alert(errorCode,errorMessage);
 
             })
 

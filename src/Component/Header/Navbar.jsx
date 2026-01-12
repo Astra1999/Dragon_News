@@ -2,9 +2,22 @@ import React, { use } from 'react';
 import { Link, NavLink } from 'react-router';
 import userImage from '../../assets/user.png'
 import { AuthContext } from '../../Provider/AuthProvider';
+import alert from 'daisyui/components/alert';
 
 const Navbar = () => {
-    const {user} = use(AuthContext);
+    const { user,logOut } = use(AuthContext);
+
+    const handleLogOut = () => {
+        console.log("User Trying to logout")
+        logOut()
+        .then(()=>{
+            alert("You Sign Out Successfully")
+        }).catch((error)=>{
+            const errorMesage = error.message;
+            alert(errorMesage);
+        })
+    }
+
     return (
         <div className='flex justify-between items-center mt-4'>
             <div className=''>{user && user.email}</div>
@@ -16,7 +29,13 @@ const Navbar = () => {
 
             <div className='flex gap-2'>
                 <img src={userImage} alt="" />
-                <Link to={'/auth/login'} className='btn btn-primary '>Login</Link>
+                {
+                    user ? (<button onClick={handleLogOut} className='btn btn-primary '>LogOut</button>) : (<Link to={'/auth/login'} className='btn btn-primary '>Login</Link>)
+                }
+
+
+
+
             </div>
         </div>
     );
