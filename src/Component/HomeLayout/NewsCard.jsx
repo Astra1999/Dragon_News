@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaStar, FaEye, FaRegBookmark, FaShareAlt } from "react-icons/fa";
+import { Link } from 'react-router';
 
 const NewsCard = ({ news }) => {
 
@@ -8,6 +9,7 @@ const NewsCard = ({ news }) => {
     // const {name, published_date, img} = author
 
     const {
+        id,
         title,
         rating,
         total_view,
@@ -80,9 +82,9 @@ const NewsCard = ({ news }) => {
 
                 <p className="text-sm text-gray-600">
                     {details.slice(0, 150)}...
-                    <span className="text-primary cursor-pointer font-medium">
-                        {" "}Read More
-                    </span>
+                    <Link to={`/news-details/${id}`} className="text-primary cursor-pointer font-medium">
+                    Read More
+                    </Link>
                 </p>
 
                 {/* Tags */}

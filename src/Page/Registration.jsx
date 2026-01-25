@@ -1,9 +1,13 @@
-import React, { use } from 'react';
-import { Link } from 'react-router';
+import React, { use, useState } from 'react';
+import { Link, useNavigate } from 'react-router';
 import { AuthContext } from '../Provider/AuthProvider';
+import Loader from './Loader';
 
 const Registration = () => {
-    const { createUser, setUser } = use(AuthContext)
+    const { createUser, setUser, updateUser } = use(AuthContext)
+    const [nameError, setNameError] = useState('')
+    const navigate = useNavigate();
+
     const handleRegister = (e) => {
         e.preventDefault();
         const form = e.target;
@@ -12,20 +16,36 @@ const Registration = () => {
         const email = form.Email.value
         const password = form.Password.value
 
-        console.log(name, photo, email, password);
+        if (name.length < 5) {
+            setNameError('Name should be more then 5 character');
+        } else {
+            setNameError('');
+        }
+
+        // console.log(name, photo, email, password);
 
         createUser(email, password)
             .then((userCredential) => {
                 const user = userCredential
                 // console.log(user)
-                setUser(user);
+
+                updateUser({ displayName: name, photoURL: photo })
+                    .then(() => {
+                        setUser({ ...user, displayName: name, photoURL: photo });
+                        navigate('/')
+                    }).catch((error) => {
+                        console.log(error.message);
+                        setUser(user)
+                    })
+
+
                 alert('SignUp successfull')
             })
             .catch((error) => {
 
                 const errorCode = error.code;
                 const errorMessage = error.message;
-                alert(errorCode,errorMessage);
+                alert(errorCode, errorMessage);
 
             })
 
@@ -41,22 +61,25 @@ const Registration = () => {
                         {/* Name */}
 
                         <label className="label text-black font-semibold">Name</label>
-                        <input type="text" name='Name' className="input" placeholder="Name" />
+                        <input type="text" name='Name' className="input" placeholder="Name" required />
+
+                        {nameError && <p>{nameError}</p>}
 
                         {/* PhotoURL */}
 
                         <label className="label text-black font-semibold">Photo URL</label>
-                        <input type="PhotoURL" className="input" name='PhotoURL' placeholder="Photo URL" />
+                        <input type="PhotoURL" className="input" name='PhotoURL' placeholder="Photo URL" required />
 
                         {/* email */}
 
                         <label className="label text-black font-semibold">Email</label>
-                        <input type="email" name='Email' className="input" placeholder="Email" />
+                        <input type="email" name='Email' className="input" placeholder="Email" required />
 
                         {/* password */}
 
                         <label className="label text-black font-semibold">Password</label>
-                        <input type="password" name='Password' className="input" placeholder="Password" />
+                        <input type="password" name='Password' className="input" placeholder="Password" required
+                            title="Must be at least 8 characters, include uppercase, lowercase, number & special character" />
 
                         <button type='submit' className="btn btn-neutral mt-4">Register</button>
                     </fieldset>
