@@ -22,7 +22,7 @@ export const router = createBrowserRouter(
                     element: <Home></Home>
                 },
                 {
-                    path: '/category/:id',
+                    path: 'category/:id',
                     element: <CategoryNews></CategoryNews>,
                     loader: () => fetch('/news.json'),
                     hydrateFallbackElement: <Loader></Loader>
@@ -34,11 +34,11 @@ export const router = createBrowserRouter(
             element: <AuthenticationLayout></AuthenticationLayout>,
             children: [
                 {
-                    path: '/auth/login',
+                    path: 'login',
                     element: <Login></Login>,
                 },
                 {
-                    path: '/auth/registration',
+                    path: 'registration',
                     element: <Registration></Registration>,
                 }
             ]
@@ -53,7 +53,7 @@ export const router = createBrowserRouter(
             
         },
         {
-            path: '/*',
+            path: '*',
             element: <h1>Error Page</h1>
         }
 
